@@ -30,9 +30,12 @@ namespace TodoApi.Models.Repositories
             
         }
 
-        async Task<IEnumerable<TodoItem>> ITodoItemRepository.GetAllTodosAsync()
+        async Task<IEnumerable<TodoItem>> ITodoItemRepository.GetAllTodosAsync(int pageNumber, int pageSize)
         {
-            return await _context.TodoItems.ToListAsync();
+            return  await _context.TodoItems
+                            .Skip((pageNumber - 1) * pageSize)  
+                            .Take(pageSize)                    
+                            .ToListAsync(); ;
         }
 
 

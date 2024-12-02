@@ -26,9 +26,9 @@ namespace TodoApi.Controllers
 
         // GET: api/TodoItems
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems()
+        public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems(int pageNumber, int pageSize)
         {
-            var todoItems = await _todoItemRepository.GetAllTodosAsync();
+            var todoItems = await _todoItemRepository.GetAllTodosAsync(pageNumber, pageSize);
 
             return todoItems.Select(x => ItemToDTO(x)).ToList();
 

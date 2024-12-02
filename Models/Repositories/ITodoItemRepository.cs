@@ -5,7 +5,7 @@ namespace TodoApi.Models.Repositories
 {
     public interface ITodoItemRepository
     {
-        Task<IEnumerable<TodoItem>> GetAllTodosAsync();
+        Task<IEnumerable<TodoItem>> GetAllTodosAsync(int pageNumber, int pageSize);
         Task<TodoItem?> GetTodo(long id);
         Task AddTodoAsync(TodoItem todoItem);
         Task UpdateTodoAsync(TodoItem todoItem);
