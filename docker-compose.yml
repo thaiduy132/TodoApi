@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  todoapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"  # Adjust to your app's listening port
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;Database=TodoList;User Id=sa;Password=your_password;
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sql_server_db
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=your_password
+    ports:
+      - "1433:1433"
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "sqlcmd", "-U", "sa", "-P", "your_password", "-Q", "SELECT 1"]
+      retries: 5
+      interval: 10s
+      start_period: 30s
+      timeout: 10s
+
+networks:
+  app-network:
+    driver: bridge
